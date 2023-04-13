@@ -20,15 +20,12 @@ export const AddNewOrderSheep = styled(ActionButton)`
 // in case there is at least one OrderSheep
 
 export const OrderSheepContainer = styled.div`
-  align-self: flex-start;
-  margin-bottom: auto;
+  border: 1px solid blue;
+  padding: 1rem;
   width: 100%;
 
   display: flex;
-  /* justify-content: space-between; */
   gap: 1rem;
-
-  /* bOrderSheep: 1px solid black; */
 `
 
 export const OrderSheep = styled.section`
@@ -39,8 +36,38 @@ export const OrderSheep = styled.section`
   background-color: ${(props) => props.theme.white};
   box-shadow: 2px 2px 2px;
   border-radius: 8px;
+
+  p.enum_ordersheep {
+    color: ${(props) => props.theme['gray-500']};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 0.5rem;
+      height: 0.5rem;
+      background-color: ${(props) => props.theme['yellow-500']};
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
+  }
 `
 
 export const Order = styled.div`
-  color: 'red';
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+
+  &:first-of-type {
+    padding-top: 1rem;
+  }
+
+  & + & {
+    border-top: 1px dashed ${(props) => props.theme['gray-500']};
+  }
+
+  h4.enum_order {
+    margin-bottom: 0.5rem;
+  }
 `

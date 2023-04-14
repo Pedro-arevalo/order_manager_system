@@ -4,6 +4,7 @@ import {
   LayoutContainer,
   MainContentSide,
   PageContainer,
+  PageFooter,
   SideMenu,
 } from './styles'
 

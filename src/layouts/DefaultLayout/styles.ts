@@ -52,12 +52,27 @@ export const MainContentSide = styled.main`
 `
 
 export const PageContainer = styled.section`
-  flex-grow: 1;
-  overflow: scroll;
-
   margin-top: 2.5rem;
   border-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  overflow: hidden;
+  flex-grow: 1;
+
   background-color: ${(props) => props.theme['gray-100']};
+
+  .content {
+    flex-grow: 1;
+    overflow: scroll;
+    max-height: 100%;
+  }
+
+  .footer {
+    background-color: ${(props) => props.theme.white};
+    padding: 1.4rem 1rem;
+  }
 `
 
 let pageVerticalMargin = 4

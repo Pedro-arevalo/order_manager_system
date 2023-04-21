@@ -32,7 +32,6 @@ export const ActionButton = styled.button`
   padding: 0.5rem 0.8rem;
   border-radius: 8px;
   border: none;
-  font-size: 1.2rem;
 
   transition: 0.2s;
 `

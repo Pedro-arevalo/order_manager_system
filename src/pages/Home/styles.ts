@@ -29,12 +29,17 @@ export const Menu = styled(PageContent)`
   }
 `
 
+export const Footer = styled.footer`
+  display: flex;
+  justify-content: flex-end;
+`
+
 export const EditMenu = styled(ActionButton)`
   /* margin: 2.5rem auto 0 auto; */
-  background-color: ${(props) => props.theme['green-500']};
-  color: ${(props) => props.theme['gray-100']};
+  background-color: ${(props) => props.theme['blue-600']};
+  color: ${(props) => props.theme['white']};
 
   &:hover {
-    background-color: ${(props) => props.theme['green-700']};
+    background-color: ${(props) => props.theme['blue-700']};
   }
 `

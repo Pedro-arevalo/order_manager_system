@@ -6,6 +6,8 @@ import { Router } from './Router'
 import { ThemeProvider } from 'styled-components'
 import { globalTheme } from './styles/themes/globalTheme'
 
+import { OrdersheepContextProvider } from './contexts/ordersContext'
+
 import { GlobalStyle } from './styles/global'
 
 interface MenuOption {
@@ -65,8 +67,10 @@ export function App() {
     <>
       <BrowserRouter>
         <ThemeProvider theme={globalTheme}>
-          <Router />
-          <GlobalStyle />
+          <OrdersheepContextProvider>
+            <Router />
+            <GlobalStyle />
+          </OrdersheepContextProvider>
         </ThemeProvider>
       </BrowserRouter>
     </>

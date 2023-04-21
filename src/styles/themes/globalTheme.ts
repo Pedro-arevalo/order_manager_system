@@ -18,4 +18,7 @@ export const globalTheme = {
   'red-700': '#7a1921',
 
   'yellow-500': '#fba94c',
+
+  'blue-600': '#0D9488',
+  'blue-700': '#0F7676',
 }

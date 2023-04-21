@@ -1,3 +1,7 @@
+import { useEffect, useContext } from 'react'
+
+import { OrdersheepContext } from '../../contexts/ordersContext'
+
 import { PlusCircle } from 'phosphor-react'
 import {
   CreateNewOrderSheep,
@@ -9,14 +13,39 @@ import {
 } from './styles'
 
 export function Orders() {
-  const isThereOrderSheeps = true
+  const { ordersheeps, setOrdersheeps } = useContext(OrdersheepContext)
+
+  const isThereOrderSheeps = ordersheeps.length > 0
+
+  useEffect(() => {
+    console.log('hello')
+  }, [ordersheeps])
+
+  function changeOrdersheep() {
+    setOrdersheeps((state) => {
+      const newOrdersheep = state
+      newOrdersheep.push({
+        id: '0001',
+        orders: [
+          {
+            plateId: '01',
+            menuOptionName: 'Assado de panela',
+            specs: 'sem arroz',
+          },
+        ],
+        currentState: 'onHold',
+      })
+      console.log(newOrdersheep)
+      return newOrdersheep
+    })
+  }
 
   return (
     <>
       {!isThereOrderSheeps ? (
         <MessageContainer>
           <p>Sem pedidos registrados no momento</p>
-          <CreateNewOrderSheep>
+          <CreateNewOrderSheep onClick={changeOrdersheep}>
             <PlusCircle size={24} />
             Criar nova comanda
           </CreateNewOrderSheep>
@@ -28,109 +57,59 @@ export function Orders() {
               <OrderSheep>
                 <p className="enum_ordersheep">Pedido 001</p>
                 <Order>
-                  <h4 className="enum_order">Prato 1</h4>
-                  <div>
-                    <h3 className="enum_order">Frango grelhado</h3>
-                    <p className="specs">
-                      Menos arroz, sem macarrão, e mais salada
-                    </p>
-                  </div>
-                </Order>
-              </OrderSheep>
-              <OrderSheep>
-                <p className="enum_ordersheep">Pedido 002</p>
-                <Order>
-                  <h4 className="enum_order">Prato 1</h4>
-                  <div>
-                    <h3 className="enum_order">Bife acebolado</h3>
-                    <p className="specs">Só tomate na salada</p>
-                  </div>
-                </Order>
-                <Order>
-                  <h4 className="enum_order">Prato 2</h4>
-                  <div>
-                    <h3 className="enum_order">Ovo frito</h3>
-                    <p className="specs">Sem feijão</p>
-                  </div>
-                </Order>
-              </OrderSheep>
-              <OrderSheep>
-                <p className="enum_ordersheep">Pedido 003</p>
-                <Order>
-                  <h4 className="enum_order">Prato 1</h4>
-                  <div>
-                    <h3 className="enum_order">Assado de panela</h3>
-                    <p className="specs">Sem macarrão</p>
-                  </div>
-                </Order>
-                <Order>
-                  <h4 className="enum_order">Prato 2</h4>
-                  <div>
-                    <h3 className="enum_order">Assado de panela</h3>
-                    <p className="specs">Sem macarrão</p>
-                  </div>
-                </Order>
-                <Order>
-                  <h4 className="enum_order">Prato 3</h4>
-                  <div>
-                    <h3 className="enum_order">Bife acebolado</h3>
-                    <p className="specs">Sem macarrão</p>
-                  </div>
-                </Order>
-                <Order>
-                  <h4 className="enum_order">Prato 4</h4>
-                  <div>
-                    <h3 className="enum_order">Assado de panela</h3>
-                    <p className="specs">Sem macarrão</p>
-                  </div>
-                </Order>
-                <Order>
-                  <h4 className="enum_order">Prato 5</h4>
-                  <div>
-                    <h3 className="enum_order">Bife acebolado</h3>
-                    <p className="specs">Sem macarrão</p>
-                  </div>
-                </Order>
-              </OrderSheep>
-              <OrderSheep>
-                <p className="enum_ordersheep">Pedido 004</p>
-                <Order>
-                  <h4 className="enum_order">Prato 1</h4>
-                  <div>
-                    <h3 className="menu_option">Escondidinho de carne</h3>
-                    <p className="specs">Só tomate na salada</p>
-                  </div>
-                </Order>
-              </OrderSheep>
-              <OrderSheep>
-                <p className="enum_ordersheep">Pedido 005</p>
-                <Order>
-                  <h4 className="enum_order">Prato 1</h4>
-                  <div>
-                    <h3 className="menu_option">
-                      Costela de porco frito ao molho barbecue
-                    </h3>
-                    <p className="specs">
-                      Sem arroz, sem macarrão, mais salada, porém sem cebola
-                    </p>
-                  </div>
-                </Order>
-                <Order>
-                  <h4 className="enum_order">Prato 2</h4>
+                  <h4 className="enum_order">Prato 01</h4>
                   <div>
                     <h3 className="menu_option">
                       Coxas e sobrecoxas de frango assadas no forno à lenha
                     </h3>
-                    <p className="specs">Sem macarrão</p>
+                    <p className="specs">
+                      Sem macarrão, menos arroz, só tomate na salada
+                    </p>
+                  </div>
+                </Order>
+                <Order>
+                  <h4 className="enum_order">Prato 01</h4>
+                  <div>
+                    <h3 className="menu_option">
+                      Coxas e sobrecoxas de frango assadas no forno à lenha
+                    </h3>
+                    <p className="specs">
+                      Sem macarrão, menos arroz, só tomate na salada
+                    </p>
+                  </div>
+                </Order>
+                <Order>
+                  <h4 className="enum_order">Prato 01</h4>
+                  <div>
+                    <h3 className="menu_option">
+                      Coxas e sobrecoxas de frango assadas no forno à lenha
+                    </h3>
+                    <p className="specs">
+                      Sem macarrão, menos arroz, só tomate na salada
+                    </p>
                   </div>
                 </Order>
               </OrderSheep>
+              {/* <pre>{JSON.stringify(ordersheeps)}</pre> */}
+              {ordersheeps.map((ordersheep) => (
+                <OrderSheep>
+                  <p className="enum_ordersheep">Pedido {ordersheep.id}</p>
+                  {ordersheep.orders.map((order) => (
+                    <Order>
+                      <h4 className="enum_order">Prato {order.plateId}</h4>
+                      <div>
+                        <h3 className="menu_option">{order.menuOptionName}</h3>
+                        <p className="specs">{order.specs}</p>
+                      </div>
+                    </Order>
+                  ))}
+                </OrderSheep>
+              ))}
             </OrderSheepContainer>
           </div>
           <div className="footer">
             <Footer>
-              <CreateNewOrderSheep>
-                <PlusCircle size={24} />
+              <CreateNewOrderSheep onClick={changeOrdersheep}>
                 Criar nova comanda
               </CreateNewOrderSheep>
             </Footer>

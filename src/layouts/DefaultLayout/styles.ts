@@ -11,10 +11,6 @@ export const SideMenu = styled.aside`
   min-width: 10rem;
   max-width: 18rem;
 
-  /* nav {
-    margin-top: 0rem;
-  } */
-
   a {
     padding: 1.2rem 2rem;
     display: block;
@@ -44,7 +40,9 @@ export const SideMenu = styled.aside`
   }
 `
 export const MainContentSide = styled.main`
-  width: 100%;
+  width: 85%;
+  min-width: calc(100% - 10rem);
+  max-width: calc(100% - 18rem);
   padding: 2rem;
 
   display: flex;
@@ -70,8 +68,9 @@ export const PageContainer = styled.section`
   }
 
   .footer {
+    border-top: 1px solid ${(props) => props.theme['gray-300']};
     background-color: ${(props) => props.theme.white};
-    padding: 1.4rem 1rem;
+    padding: 1.2rem 1rem;
   }
 `
 

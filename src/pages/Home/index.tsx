@@ -1,7 +1,11 @@
-import { EditMenu, Menu } from './styles'
+import { useContext } from 'react'
+import { OrdersheepContext } from '../../contexts/ordersContext'
+
+import { EditMenu, Footer, Menu } from './styles'
 import { Pencil, ForkKnife } from 'phosphor-react'
 
 export function Home() {
+  const { ordersheeps } = useContext(OrdersheepContext)
   return (
     <>
       <div className="content">
@@ -23,11 +27,11 @@ export function Home() {
           </ul>
         </Menu>
       </div>
+      <pre>{JSON.stringify(ordersheeps)}</pre>
       <div className="footer">
-        <EditMenu>
-          <Pencil size={24} />
-          Editar cardápio
-        </EditMenu>
+        <Footer>
+          <EditMenu>Editar cardápio</EditMenu>
+        </Footer>
       </div>
     </>
   )

@@ -10,7 +10,7 @@ export const MessageContainer = styled(PageContent)`
 
 export const CreateNewOrderSheep = styled(ActionButton)`
   background-color: ${(props) => props.theme['green-500']};
-  color: ${(props) => props.theme['gray-100']};
+  color: ${(props) => props.theme.white};
 
   &:hover {
     background-color: ${(props) => props.theme['green-700']};
@@ -23,6 +23,7 @@ export const OrderSheepContainer = styled.div`
   padding: 1rem;
   overflow: scroll;
   width: 100%;
+  height: 100%;
 
   display: flex;
   align-items: flex-start;
@@ -58,17 +59,26 @@ export const OrderSheep = styled.section`
 `
 
 export const Order = styled.div`
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
 
   & + & {
     border-top: 1px dashed ${(props) => props.theme['gray-500']};
+  }
+
+  &:last-of-type {
+    padding-bottom: 0;
   }
 
   h4.enum_order {
     margin-bottom: 0.3rem;
     text-align: center;
     color: ${(props) => props.theme['gray-300']};
+  }
+
+  p.specs {
+    margin-top: 0.2rem;
+    text-transform: lowercase;
   }
 `
 

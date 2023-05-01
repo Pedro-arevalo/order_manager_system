@@ -1,6 +1,6 @@
-import { useEffect, useContext } from 'react'
+import { useEffect, useContext, useState } from 'react'
 
-import { OrdersheepContext } from '../../contexts/ordersContext'
+import { OrdersheepContext } from '../../contexts/ordersheepsContext'
 
 import { PlusCircle } from 'phosphor-react'
 import {
@@ -14,28 +14,32 @@ import {
 
 export function Orders() {
   const { ordersheeps, setOrdersheeps } = useContext(OrdersheepContext)
-
   const isThereOrderSheeps = ordersheeps.length > 0
 
   useEffect(() => {
-    console.log('hello')
-  }, [ordersheeps])
+    console.log()
+  }, [])
 
   function changeOrdersheep() {
     setOrdersheeps((state) => {
-      const newOrdersheep = state
+      /*
+        for some reason, without the slice() method,
+        React can't notice there's a change in the
+        state, so it doesn't rerenders, as it should
+      */
+      const newOrdersheep = state.slice()
       newOrdersheep.push({
         id: '0001',
+        toTake: false,
         orders: [
           {
-            plateId: '01',
+            id: '01',
             menuOptionName: 'Assado de panela',
             specs: 'sem arroz',
           },
         ],
         currentState: 'onHold',
       })
-      console.log(newOrdersheep)
       return newOrdersheep
     })
   }
@@ -54,49 +58,13 @@ export function Orders() {
         <>
           <div className="content">
             <OrderSheepContainer>
-              <OrderSheep>
-                <p className="enum_ordersheep">Pedido 001</p>
-                <Order>
-                  <h4 className="enum_order">Prato 01</h4>
-                  <div>
-                    <h3 className="menu_option">
-                      Coxas e sobrecoxas de frango assadas no forno à lenha
-                    </h3>
-                    <p className="specs">
-                      Sem macarrão, menos arroz, só tomate na salada
-                    </p>
-                  </div>
-                </Order>
-                <Order>
-                  <h4 className="enum_order">Prato 01</h4>
-                  <div>
-                    <h3 className="menu_option">
-                      Coxas e sobrecoxas de frango assadas no forno à lenha
-                    </h3>
-                    <p className="specs">
-                      Sem macarrão, menos arroz, só tomate na salada
-                    </p>
-                  </div>
-                </Order>
-                <Order>
-                  <h4 className="enum_order">Prato 01</h4>
-                  <div>
-                    <h3 className="menu_option">
-                      Coxas e sobrecoxas de frango assadas no forno à lenha
-                    </h3>
-                    <p className="specs">
-                      Sem macarrão, menos arroz, só tomate na salada
-                    </p>
-                  </div>
-                </Order>
-              </OrderSheep>
               {/* <pre>{JSON.stringify(ordersheeps)}</pre> */}
               {ordersheeps.map((ordersheep) => (
-                <OrderSheep>
+                <OrderSheep key={ordersheep.id}>
                   <p className="enum_ordersheep">Pedido {ordersheep.id}</p>
                   {ordersheep.orders.map((order) => (
-                    <Order>
-                      <h4 className="enum_order">Prato {order.plateId}</h4>
+                    <Order key={order.id}>
+                      <h4 className="enum_order">Prato {order.id}</h4>
                       <div>
                         <h3 className="menu_option">{order.menuOptionName}</h3>
                         <p className="specs">{order.specs}</p>
@@ -110,7 +78,7 @@ export function Orders() {
           <div className="footer">
             <Footer>
               <CreateNewOrderSheep onClick={changeOrdersheep}>
-                Criar nova comanda
+                Criar novo pedido
               </CreateNewOrderSheep>
             </Footer>
           </div>

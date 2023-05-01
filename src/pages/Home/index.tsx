@@ -1,38 +1,58 @@
-import { useContext } from 'react'
-import { OrdersheepContext } from '../../contexts/ordersContext'
+import { useState, useContext } from 'react'
 
 import { EditMenu, Footer, Menu } from './styles'
-import { Pencil, ForkKnife } from 'phosphor-react'
+import { ForkKnife } from 'phosphor-react'
+import { MenuContext } from '../../contexts/menuContext'
+import { ModalToSetMenu } from './components/ModalToSetMenu'
 
 export function Home() {
-  const { ordersheeps } = useContext(OrdersheepContext)
+  const { menuOptions, setMenuOptions } = useContext(MenuContext)
+
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+
+  const isMenuEmpty = !menuOptions.length
+
+  console.log(isMenuEmpty)
+
   return (
     <>
-      <div className="content">
-        <Menu>
-          <h2>Cardápio de hoje</h2>
-          <ul>
-            <li>
-              <ForkKnife size={32} /> Bife acebolado
-            </li>
-            <li>
-              <ForkKnife size={32} /> Assado de panela
-            </li>
-            <li>
-              <ForkKnife size={32} /> Almôndegas
-            </li>
-            <li>
-              <ForkKnife size={32} /> Frango ao creme de milho
-            </li>
-          </ul>
-        </Menu>
-      </div>
-      <pre>{JSON.stringify(ordersheeps)}</pre>
-      <div className="footer">
-        <Footer>
-          <EditMenu>Editar cardápio</EditMenu>
-        </Footer>
-      </div>
+      {isMenuEmpty ? (
+        <div>
+          <h1>Empty</h1>
+          <button onClick={() => setModalIsOpen(true)}>Open modal</button>
+        </div>
+      ) : (
+        <>
+          <div className="content">
+            <Menu>
+              <h2>Cardápio de hoje</h2>
+              <ul>
+                {menuOptions.map((option) => (
+                  <li key={option.id}>
+                    <ForkKnife size={32} /> {option.name}
+                  </li>
+                ))}
+              </ul>
+            </Menu>
+          </div>
+          <div className="footer">
+            <Footer>
+              <EditMenu
+                onClick={() => {
+                  setModalIsOpen(true)
+                }}
+              >
+                Editar cardápio
+              </EditMenu>
+            </Footer>
+          </div>
+        </>
+      )}
+      <ModalToSetMenu
+        modalIsOpen={modalIsOpen}
+        setModalIsOpen={setModalIsOpen}
+        isMenuEmpty={isMenuEmpty}
+      />
     </>
   )
 }

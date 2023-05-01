@@ -7,15 +7,25 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  :focus {
-    outline: 0;
-    box-shadow: 0 0 0 2px ${(props) => props.theme['green-500']};
-  }
+
 
   body {
     background-color: ${(props) => props.theme['gray-300']};
     color: ${(props) => props.theme['gray-600']};
     -webkit-font-smoothing: antialiased;
+
+    .ReactModal__Overlay {
+      opacity: 0;
+      transition: opacity 300ms ease-in-out;
+    }
+
+    .ReactModal__Overlay--after-open {
+      opacity: 1;
+    }
+
+    .ReactModal__Overlay--before-close {
+      opacity: 0;
+    }
   }
 
   body, input, textarea, button {

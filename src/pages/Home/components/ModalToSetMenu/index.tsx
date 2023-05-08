@@ -27,17 +27,19 @@ export function ModalToSetMenu({
       contentLabel="Defina as opções do cardápio"
       closeTimeoutMS={200}
       style={{
+        overlay: {
+          backgroundColor: 'rgba(255, 255, 255, .5)',
+        },
         content: {
           width: '30%',
           minWidth: '300px',
           maxWidth: '400px',
           margin: '0 auto',
+          padding: '0',
         },
       }}
     >
-      <ModalContent>
-        <MenuForm isMenuEmpty={isMenuEmpty} closeModal={delegateModalClosing} />
-      </ModalContent>
+      <MenuForm isMenuEmpty={isMenuEmpty} closeModal={delegateModalClosing} />
     </Modal>
   )
 }

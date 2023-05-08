@@ -2,6 +2,10 @@ import { useContext } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { MenuContext } from '../../../../contexts/menuContext'
 
+import { Trash, Plus } from 'phosphor-react'
+
+import { Form } from './styles'
+
 type MenuForm = {
   menuOptions: {
     id: string
@@ -55,41 +59,45 @@ export function MenuForm({ isMenuEmpty, closeModal }: MenuFormProps) {
   const isAddingInputsAllowed = emptyInputs.length !== 0
 
   return (
-    <form onSubmit={handleSubmit(updateMenuContext)}>
-      {isMenuEmpty ? (
-        <h1>Cadastrar novo cardápio</h1>
-      ) : (
-        <h1>Editar cardápio</h1>
-      )}
-      {fields.map((field, index) => (
-        <section key={field.id}>
-          <input type="text" {...register(`menuOptions.${index}.name`)} />
-          {index !== 0 && (
-            <button
-              type="button"
-              onClick={() => {
-                remove(index)
-              }}
-            >
-              Deletar opção
-            </button>
-          )}
-        </section>
-      ))}
-
-      <button
-        type="button"
-        disabled={isAddingInputsAllowed}
-        onClick={() => {
-          append({
-            id: generateUniqueId(),
-            name: '',
-          })
-        }}
-      >
-        Adicionar opção
-      </button>
-      <button type="submit">Salvar</button>
-    </form>
+    <Form onSubmit={handleSubmit(updateMenuContext)}>
+      <div className="form_header">
+        <h1>{isMenuEmpty ? 'Cadastrar novo cardápio' : 'Editar cardápio'}</h1>
+      </div>
+      <div className="form_content">
+        {fields.map((field, index) => (
+          <section key={field.id}>
+            <input type="text" {...register(`menuOptions.${index}.name`)} />
+            {index !== 0 && (
+              <button
+                className="delete_option"
+                type="button"
+                onClick={() => {
+                  remove(index)
+                }}
+              >
+                <Trash size={24} />
+              </button>
+            )}
+          </section>
+        ))}
+        <button
+          className="add_option"
+          type="button"
+          disabled={isAddingInputsAllowed}
+          onClick={() => {
+            append({
+              id: generateUniqueId(),
+              name: '',
+            })
+          }}
+        >
+          <Plus size={24} />
+          Adicionar
+        </button>
+      </div>
+      <div className="form_footer">
+        <button type="submit">Salvar</button>
+      </div>
+    </Form>
   )
 }

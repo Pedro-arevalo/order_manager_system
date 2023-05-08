@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { MenuContext } from '../../../../contexts/menuContext'
 
-import { Trash, Plus } from 'phosphor-react'
+import { Trash, Plus, X } from 'phosphor-react'
 
 import { Form } from './styles'
 
@@ -64,39 +64,87 @@ export function MenuForm({ isMenuEmpty, closeModal }: MenuFormProps) {
         <h1>{isMenuEmpty ? 'Cadastrar novo cardápio' : 'Editar cardápio'}</h1>
       </div>
       <div className="form_content">
-        {fields.map((field, index) => (
-          <section key={field.id}>
-            <input type="text" {...register(`menuOptions.${index}.name`)} />
-            {index !== 0 && (
+        {fields.length ? (
+          <div className="options_logged">
+            {fields.map((field, index) => (
+              <section key={field.id}>
+                <button
+                  className="delete_option"
+                  type="button"
+                  onClick={() => {
+                    remove(index)
+                  }}
+                >
+                  <Trash size={24} />
+                </button>
+                <input type="text" {...register(`menuOptions.${index}.name`)} />
+              </section>
+            ))}
+            <div className="button_group">
               <button
-                className="delete_option"
+                className="add_option"
                 type="button"
+                disabled={isAddingInputsAllowed}
                 onClick={() => {
-                  remove(index)
+                  append({
+                    id: generateUniqueId(),
+                    name: '',
+                  })
                 }}
               >
-                <Trash size={24} />
+                <Plus size={24} />
+                Adicionar
               </button>
-            )}
-          </section>
-        ))}
-        <button
-          className="add_option"
-          type="button"
-          disabled={isAddingInputsAllowed}
-          onClick={() => {
-            append({
-              id: generateUniqueId(),
-              name: '',
-            })
-          }}
-        >
-          <Plus size={24} />
-          Adicionar
-        </button>
+              {!isMenuEmpty && (
+                <button
+                  className="dismiss_menu"
+                  onClick={() => {
+                    closeModal()
+                    setMenuOptions([])
+                  }}
+                  type="button"
+                >
+                  <X size={24} />
+                  Desfazer cardápio
+                </button>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="no_options_logged">
+            <p>Nenhuma opção de cardápio especificada</p>
+            <div>
+              <button
+                className="add_option"
+                type="button"
+                disabled={isAddingInputsAllowed}
+                onClick={() => {
+                  append({
+                    id: generateUniqueId(),
+                    name: '',
+                  })
+                }}
+              >
+                <Plus size={24} />
+                Adicionar opção
+              </button>
+              <button className="submit_without_options" type="submit">
+                <X size={24} />
+                Desfazer cardápio
+              </button>
+            </div>
+          </div>
+        )}
       </div>
       <div className="form_footer">
-        <button type="submit">Salvar</button>
+        <button className="cancel" type="button" onClick={() => closeModal()}>
+          Voltar
+        </button>
+        {fields.length !== 0 && (
+          <button className="save" type="submit">
+            Salvar
+          </button>
+        )}
       </div>
     </Form>
   )

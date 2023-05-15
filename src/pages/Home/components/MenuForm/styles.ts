@@ -1,5 +1,23 @@
 import styled from 'styled-components'
 
+export const MyFormButton = styled.button`
+  color: ${(props) => props.theme.white};
+  border: none;
+  border-radius: 4px;
+  padding: 0.4rem 0.6rem;
+  transition: 0.2s;
+
+  display: flex;
+  align-items: center;
+
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+  }
+`
+
 export const Form = styled.form`
   height: 100%;
 
@@ -9,22 +27,6 @@ export const Form = styled.form`
 
   /* display: flex;
   flex-direction: column; */
-  button {
-    color: ${(props) => props.theme.white};
-    border: none;
-    border-radius: 4px;
-    padding: 0.4rem 0.6rem;
-
-    display: flex;
-    align-items: center;
-
-    cursor: pointer;
-  }
-
-  button:disabled {
-    cursor: not-allowed;
-    opacity: 0.8;
-  }
 
   .form_header {
     background-color: ${(props) => props.theme['blue-700']};

@@ -12,8 +12,6 @@ export function Home() {
 
   const isMenuEmpty = !menuOptions.length
 
-  console.log(isMenuEmpty)
-
   return (
     <>
       {isMenuEmpty ? (

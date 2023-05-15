@@ -1,16 +1,32 @@
-import { useContext } from 'react'
-import { useFieldArray, useForm } from 'react-hook-form'
+// context
+import { useContext, createContext } from 'react'
 import { MenuContext } from '../../../../contexts/menuContext'
 
+// react hook form
+import {
+  FieldArrayWithId,
+  UseFieldArrayAppend,
+  UseFieldArrayRemove,
+  UseFormRegister,
+  useFieldArray,
+  useForm,
+} from 'react-hook-form'
+
+// icons
 import { Trash, Plus, X } from 'phosphor-react'
 
-import { Form } from './styles'
+// styles
+import { Form, MyFormButton } from './styles'
+import { NoFieldsFormLayout } from '../NoFieldsFormLayout'
+import { FormWithFieldsLayout } from '../FormWithFieldsLayout'
+
+interface MenuOption {
+  id: string
+  name: string
+}
 
 type MenuForm = {
-  menuOptions: {
-    id: string
-    name: string
-  }[]
+  menuOptions: MenuOption[]
 }
 
 interface MenuFormProps {
@@ -18,9 +34,26 @@ interface MenuFormProps {
   closeModal: () => void
 }
 
+interface FieldsContextData {
+  fields: FieldArrayWithId<MenuForm, 'menuOptions', 'id'>[]
+  isAddingInputsAllowed: boolean
+  isMenuEmpty: boolean
+  addNewField: (field: MenuOption) => void
+  removeField: (fieldIndex: number) => void
+  generateUniqueId: () => string
+  register: UseFormRegister<MenuForm>
+  setMenuOptions: React.Dispatch<
+    React.SetStateAction<{ id: string; name: string }[]>
+  >
+  closeModal: () => void
+}
+
 function generateUniqueId() {
   return Date.now().toString(36) + Math.random().toString(36).substring(2)
 }
+
+// context
+export const FieldsContext = createContext({} as FieldsContextData)
 
 export function MenuForm({ isMenuEmpty, closeModal }: MenuFormProps) {
   const { menuOptions, setMenuOptions } = useContext(MenuContext)
@@ -41,109 +74,64 @@ export function MenuForm({ isMenuEmpty, closeModal }: MenuFormProps) {
     control,
   })
 
-  function updateMenuContext(data: MenuForm) {
+  function onSubmit(data: MenuForm) {
     setMenuOptions(data.menuOptions)
     closeModal()
   }
 
-  const inputsValue = watch('menuOptions')
+  function addNewField(field: MenuOption) {
+    append(field)
+  }
 
-  const emptyInputs = inputsValue.filter((input) => {
-    if (input.name === '') {
-      return true
-    } else {
-      return false
-    }
-  })
+  function removeField(fieldIndex: number) {
+    remove(fieldIndex)
+  }
 
-  const isAddingInputsAllowed = emptyInputs.length !== 0
+  function getAddingInputsValidation() {
+    const inputsValue = watch('menuOptions')
+    const emptyInputs = inputsValue.filter((input) => input.name === '')
+    return emptyInputs.length !== 0
+  }
+
+  const isAddingInputsAllowed = getAddingInputsValidation()
+
+  // context
+  const fieldsProvider = {
+    fields,
+    isMenuEmpty,
+    isAddingInputsAllowed,
+    register,
+    setMenuOptions,
+    addNewField,
+    removeField,
+    generateUniqueId,
+    closeModal,
+  }
 
   return (
-    <Form onSubmit={handleSubmit(updateMenuContext)}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <div className="form_header">
         <h1>{isMenuEmpty ? 'Cadastrar novo cardápio' : 'Editar cardápio'}</h1>
       </div>
+
       <div className="form_content">
-        {fields.length ? (
-          <div className="options_logged">
-            {fields.map((field, index) => (
-              <section key={field.id}>
-                <button
-                  className="delete_option"
-                  type="button"
-                  onClick={() => {
-                    remove(index)
-                  }}
-                >
-                  <Trash size={24} />
-                </button>
-                <input type="text" {...register(`menuOptions.${index}.name`)} />
-              </section>
-            ))}
-            <div className="button_group">
-              <button
-                className="add_option"
-                type="button"
-                disabled={isAddingInputsAllowed}
-                onClick={() => {
-                  append({
-                    id: generateUniqueId(),
-                    name: '',
-                  })
-                }}
-              >
-                <Plus size={24} />
-                Adicionar
-              </button>
-              {!isMenuEmpty && (
-                <button
-                  className="dismiss_menu"
-                  onClick={() => {
-                    closeModal()
-                    setMenuOptions([])
-                  }}
-                  type="button"
-                >
-                  <X size={24} />
-                  Desfazer cardápio
-                </button>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className="no_options_logged">
-            <p>Nenhuma opção de cardápio especificada</p>
-            <div>
-              <button
-                className="add_option"
-                type="button"
-                disabled={isAddingInputsAllowed}
-                onClick={() => {
-                  append({
-                    id: generateUniqueId(),
-                    name: '',
-                  })
-                }}
-              >
-                <Plus size={24} />
-                Adicionar opção
-              </button>
-              <button className="submit_without_options" type="submit">
-                <X size={24} />
-                Desfazer cardápio
-              </button>
-            </div>
-          </div>
-        )}
+        <FieldsContext.Provider value={fieldsProvider}>
+          {fields.length ? <FormWithFieldsLayout /> : <NoFieldsFormLayout />}
+        </FieldsContext.Provider>
       </div>
+
       <div className="form_footer">
-        <button className="cancel" type="button" onClick={() => closeModal()}>
+        <MyFormButton
+          className="cancel"
+          type="button"
+          onClick={() => closeModal()}
+        >
           Voltar
-        </button>
+        </MyFormButton>
         {fields.length !== 0 && (
-          <button className="save" type="submit">
+          <MyFormButton className="save" type="submit">
             Salvar
-          </button>
+          </MyFormButton>
         )}
       </div>
     </Form>

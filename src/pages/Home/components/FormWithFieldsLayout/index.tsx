@@ -1,8 +1,8 @@
 // context
 import { useContext } from 'react'
-import { FieldsContext } from '../MenuForm'
 import { Plus, Trash, X } from 'phosphor-react'
 import { AnotherFormButton } from './styles'
+import { FormFieldsContext } from '../../../../contexts/formFieldsContext'
 
 export function FormWithFieldsLayout() {
   const {
@@ -14,8 +14,11 @@ export function FormWithFieldsLayout() {
     isAddingInputsAllowed,
     register,
     setMenuOptions,
-    closeModal,
-  } = useContext(FieldsContext)
+  } = useContext(FormFieldsContext)
+
+  // context stuff
+  // fields, addNewField, removeField, isAddingInputsAllowed, register
+
   return (
     <div className="options_logged">
       {fields.map((field, index) => (
@@ -51,7 +54,7 @@ export function FormWithFieldsLayout() {
           <AnotherFormButton
             className="dismiss_menu"
             onClick={() => {
-              closeModal()
+              // closeModal()
               setMenuOptions([])
             }}
             type="button"

@@ -1,24 +1,14 @@
 // context
-import { useContext, createContext } from 'react'
+import { useContext } from 'react'
 import { MenuContext } from '../../../../contexts/menuContext'
+import { FormFieldsContext } from '../../../../contexts/formFieldsContext'
 
-// react hook form
-import {
-  FieldArrayWithId,
-  UseFieldArrayAppend,
-  UseFieldArrayRemove,
-  UseFormRegister,
-  useFieldArray,
-  useForm,
-} from 'react-hook-form'
-
-// icons
-import { Trash, Plus, X } from 'phosphor-react'
+// components
+import { NoFieldsFormLayout } from '../NoFieldsFormLayout'
+import { FormWithFieldsLayout } from '../FormWithFieldsLayout'
 
 // styles
 import { Form, MyFormButton } from './styles'
-import { NoFieldsFormLayout } from '../NoFieldsFormLayout'
-import { FormWithFieldsLayout } from '../FormWithFieldsLayout'
 
 interface MenuOption {
   id: string
@@ -30,82 +20,16 @@ type MenuForm = {
 }
 
 interface MenuFormProps {
-  isMenuEmpty: boolean
   closeModal: () => void
 }
 
-interface FieldsContextData {
-  fields: FieldArrayWithId<MenuForm, 'menuOptions', 'id'>[]
-  isAddingInputsAllowed: boolean
-  isMenuEmpty: boolean
-  addNewField: (field: MenuOption) => void
-  removeField: (fieldIndex: number) => void
-  generateUniqueId: () => string
-  register: UseFormRegister<MenuForm>
-  setMenuOptions: React.Dispatch<
-    React.SetStateAction<{ id: string; name: string }[]>
-  >
-  closeModal: () => void
-}
-
-function generateUniqueId() {
-  return Date.now().toString(36) + Math.random().toString(36).substring(2)
-}
-
-// context
-export const FieldsContext = createContext({} as FieldsContextData)
-
-export function MenuForm({ isMenuEmpty, closeModal }: MenuFormProps) {
+export function MenuForm({ closeModal }: MenuFormProps) {
   const { menuOptions, setMenuOptions } = useContext(MenuContext)
-  const { register, handleSubmit, watch, control } = useForm<MenuForm>({
-    defaultValues: {
-      menuOptions: isMenuEmpty
-        ? [
-            {
-              id: generateUniqueId(),
-              name: '',
-            },
-          ]
-        : menuOptions,
-    },
-  })
-  const { fields, append, remove } = useFieldArray({
-    name: 'menuOptions',
-    control,
-  })
+  const { fields, handleSubmit, isMenuEmpty } = useContext(FormFieldsContext)
 
   function onSubmit(data: MenuForm) {
     setMenuOptions(data.menuOptions)
     closeModal()
-  }
-
-  function addNewField(field: MenuOption) {
-    append(field)
-  }
-
-  function removeField(fieldIndex: number) {
-    remove(fieldIndex)
-  }
-
-  function getAddingInputsValidation() {
-    const inputsValue = watch('menuOptions')
-    const emptyInputs = inputsValue.filter((input) => input.name === '')
-    return emptyInputs.length !== 0
-  }
-
-  const isAddingInputsAllowed = getAddingInputsValidation()
-
-  // context
-  const fieldsProvider = {
-    fields,
-    isMenuEmpty,
-    isAddingInputsAllowed,
-    register,
-    setMenuOptions,
-    addNewField,
-    removeField,
-    generateUniqueId,
-    closeModal,
   }
 
   return (
@@ -115,9 +39,7 @@ export function MenuForm({ isMenuEmpty, closeModal }: MenuFormProps) {
       </div>
 
       <div className="form_content">
-        <FieldsContext.Provider value={fieldsProvider}>
-          {fields.length ? <FormWithFieldsLayout /> : <NoFieldsFormLayout />}
-        </FieldsContext.Provider>
+        {fields.length ? <FormWithFieldsLayout /> : <NoFieldsFormLayout />}
       </div>
 
       <div className="form_footer">

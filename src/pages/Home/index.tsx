@@ -49,7 +49,6 @@ export function Home() {
       <ModalToSetMenu
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}
-        isMenuEmpty={isMenuEmpty}
       />
     </>
   )

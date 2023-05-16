@@ -1,20 +1,15 @@
 // context
 import { useContext } from 'react'
-import { FieldsContext } from '../MenuForm'
 
 // icons
 import { Plus, X } from 'phosphor-react'
 
 import { FormButton } from './styles'
+import { FormFieldsContext } from '../../../../contexts/formFieldsContext'
 
 export function NoFieldsFormLayout() {
-  const {
-    fields,
-    addNewField,
-    removeField,
-    generateUniqueId,
-    isAddingInputsAllowed,
-  } = useContext(FieldsContext)
+  const { fields, addNewField, generateUniqueId, isAddingInputsAllowed } =
+    useContext(FormFieldsContext)
 
   return (
     <div className="no_options_logged">

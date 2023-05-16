@@ -2,10 +2,10 @@ import Modal from 'react-modal'
 
 import { ModalContent } from './styles'
 import { MenuForm } from '../MenuForm'
+import { FormFieldsContextProvider } from '../../../../contexts/formFieldsContext'
 
 interface ModalToSetMenuProps {
   modalIsOpen: boolean
-  isMenuEmpty: boolean
   setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -13,7 +13,6 @@ Modal.setAppElement('#root')
 
 export function ModalToSetMenu({
   modalIsOpen,
-  isMenuEmpty,
   setModalIsOpen,
 }: ModalToSetMenuProps) {
   function delegateModalClosing() {
@@ -39,7 +38,9 @@ export function ModalToSetMenu({
         },
       }}
     >
-      <MenuForm isMenuEmpty={isMenuEmpty} closeModal={delegateModalClosing} />
+      <FormFieldsContextProvider>
+        <MenuForm closeModal={delegateModalClosing} />
+      </FormFieldsContextProvider>
     </Modal>
   )
 }
